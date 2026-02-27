@@ -1,0 +1,35 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Fix expense saving error on Add Expense form",
+  "requirements": [
+    {
+      "id": "REQ-14",
+      "summary": "Diagnose and fix the 'Failed to save. Please try again.' error when submitting the Add Expense form by ensuring the Category variant passed from the frontend exactly matches the backend type definition, fixing any type mismatch or serialization issues so all categories save successfully",
+      "acceptanceCriteria": [
+        "Submitting a valid expense entry (any category, any subcategory combination) no longer shows 'Failed to save. Please try again.'",
+        "A Food > Biryani expense with a valid amount saves successfully and appears in the History tab",
+        "All other categories (Tea, Cooldrink, Petrol, Fruits, Recharge, Shopping, Trip, Bike Repair, Medical, Cash Transfer, Others) also save without error",
+        "The backend `addExpense` Motoko function accepts all Category variants defined in main.mo without trapping or returning an error",
+        "After a successful save, the form resets and a success confirmation is shown to the user"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/lib/categoryUtils.ts",
+          "operation": "modify",
+          "description": "Review and fix the buildCategoryVariant function to ensure it constructs Category discriminated union objects that exactly match the backend type definition in backend.d.ts. Verify that the __kind__ property and nested structure for each category variant (tea, cashTransfer, coolDrink, petrol, food, trip, others, recharge, bikeRepair, fruits, shopping, medical) match the backend interface. Pay special attention to the 'others' variant and ensure all variants use the correct property name as the discriminator. Verify that null variants use the correct structure {__kind__: 'categoryName', categoryName: null} and enum-based variants correctly instantiate the nested enum value."
+        },
+        {
+          "path": "frontend/src/hooks/useQueries.ts",
+          "operation": "modify",
+          "description": "Review the useAddExpense mutation and its call to actor.addExpense. Verify that the Category parameter being passed is correctly structured according to the backend interface. Add debug logging (temporary or conditional) to inspect the exact Category object being sent to the backend. Ensure that the buildCategoryVariant call produces a valid discriminated union that matches the backend type. Add error handling to capture and display more specific error messages from the backend to help diagnose type mismatches or serialization failures."
+        },
+        {
+          "path": "frontend/src/pages/AddExpense.tsx",
+          "operation": "modify",
+          "description": "Review the form submission handler and ensure the Category variant construction is correct when calling the addExpense mutation. Verify that the category and subcategory values from the form state are correctly passed to buildCategoryVariant before submission. Improve error handling to display specific error messages returned from the backend or mutation. Add validation to ensure that the category and subcategory combination is valid before submission. After a successful save, ensure the form resets properly and displays a success confirmation message to the user."
+        }
+      ]
+    }
+  ]
+}

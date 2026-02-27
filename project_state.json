@@ -1,0 +1,158 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 9,
+  "summary": "Mobile-friendly expense tracker app in Indian Rupees (₹) that runs locally on device using localStorage (no server). Tracks daily expenses with date stamps, organized by expense types (Food, Tea, Cooldrink, Petrol, Fruits, Recharge, Shopping, Trip, Bike Repair, Medical, Cash Transfer) with sub-categories for Food (Biryani, Junk Food), Shopping (Clothes, Accessories, Watches, Skincare, Gadgets), Medical (Medicine, Hospital), and Cash Transfer (Family, NeedToPay, Repay). Repay entries require a name field and appear in a dedicated dynamic repay report with person-based grouping and highlighted visibility. Includes date-based filtering and expense summary by category.",
+  "architectural_notes": [
+    "Uses localStorage for all data persistence – fully offline, no server required",
+    "Mobile-first responsive design with touch-friendly UI",
+    "Repay entries (under Cash Transfer) store a 'personName' field and are surfaced in a dedicated Repay Report view grouped by person"
+  ],
+  "known_issues": [
+    "Expense saving fails with 'failed to save, please try again later' error on the Add Expense form"
+  ],
+  "isFixRequest": true,
+  "existing_features": [
+    {
+      "id": "feature-build-a-mobile-first-expense-entry-form-on-the-frontend-with-the-following-fields-1-date-picker-defaulting-to-today-s-date-2-expense-type-dropdown-with-options-food-tea-cooldrink-petrol-fruits-recharge-shopping-trip-bike-repair-3-sub-category-dropdown-that-appears-only-when-food-or-shopping-is-selected-food-sub-categories-biryani-junk-food-shopping-sub-categories-clothes-accessories-watches-skincare-gadgets-4-amount-field-in-indian-rupees-5-optional-notes-field-6-submit-button-to-save-the-entry",
+      "title": "Build a mobile-first Expense Entry form on the frontend with the following fields: (1) Date picker defaulting to today's date, (2) Expense Type dropdown with options: Food, Tea, Cooldrink, Petrol, Fruits, Recharge, Shopping, Trip, Bike Repair. (3) Sub-category dropdown that appears only when Food or Shopping is selected — Food sub-categories: Biryani, Junk Food; Shopping sub-categories: Clothes, Accessories, Watches, Skincare, Gadgets. (4) Amount field in Indian Rupees (₹). (5) Optional notes field. (6) Submit button to save the entry.",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-build-an-expense-history-view-on-the-frontend-that-lists-all-entered-expenses-each-row-must-display-the-date-expense-type-sub-category-if-any-and-amount-in-provide-date-based-filtering-a-single-date-picker-to-filter-by-a-specific-day-and-a-date-range-picker-start-date-end-date-to-filter-across-multiple-days-show-a-summary-section-below-the-filtered-list-with-total-spending-per-category-and-an-overall-total-in",
+      "title": "Build an Expense History view on the frontend that lists all entered expenses. Each row must display the date, expense type, sub-category (if any), and amount in ₹. Provide date-based filtering: a single date picker to filter by a specific day, and a date range picker (start date + end date) to filter across multiple days. Show a summary section below the filtered list with total spending per category and an overall total in ₹.",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-ensure-the-app-is-fully-mobile-responsive-layout-must-work-comfortably-on-small-screens-320px-430px-width-use-a-bottom-navigation-bar-or-tab-based-navigation-to-switch-between-add-expense-and-history-views-all-interactive-elements-buttons-dropdowns-inputs-must-be-touch-friendly-with-adequate-tap-target-sizes",
+      "title": "Ensure the app is fully mobile-responsive. Layout must work comfortably on small screens (320px–430px width). Use a bottom navigation bar or tab-based navigation to switch between 'Add Expense' and 'History' views. All interactive elements (buttons, dropdowns, inputs) must be touch-friendly with adequate tap target sizes.",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-apply-a-clean-modern-visual-theme-optimized-for-a-personal-finance-app-use-a-warm-earthy-color-palette-e-g-deep-saffron-amber-accents-on-a-light-cream-or-off-white-background-with-clear-typographic-hierarchy-category-badges-should-be-color-coded-for-quick-visual-scanning-the-overall-feel-should-be-simple-trustworthy-and-easy-to-use-one-handed-on-a-phone",
+      "title": "Apply a clean, modern visual theme optimized for a personal finance app. Use a warm, earthy color palette (e.g., deep saffron/amber accents on a light cream or off-white background) with clear typographic hierarchy. Category badges should be color-coded for quick visual scanning. The overall feel should be simple, trustworthy, and easy to use one-handed on a phone.",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-generate-an-app-icon-image-a-stylized-indian-rupee-symbol-with-a-minimalist-coin-or-wallet-motif-on-a-warm-amber-saffron-background-suitable-for-use-as-the-app-logo-in-the-header",
+      "title": "Generate an app icon image: a stylized Indian Rupee symbol (₹) with a minimalist coin or wallet motif on a warm amber/saffron background, suitable for use as the app logo in the header.",
+      "reqIds": [
+        "REQ-6"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-medical-to-the-expense-category-dropdown-in-the-add-expense-form-when-medical-is-selected-show-a-sub-category-dropdown-with-options-medicine-hospital-apply-a-distinct-color-coded-badge-for-the-medical-category-consistent-with-the-app-s-existing-badge-design",
+      "title": "Add 'Medical' to the expense category dropdown in the Add Expense form. When 'Medical' is selected, show a sub-category dropdown with options: Medicine, Hospital. Apply a distinct color-coded badge for the Medical category consistent with the app's existing badge design.",
+      "reqIds": [
+        "REQ-8"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-cash-transfer-to-the-expense-category-dropdown-in-the-add-expense-form-when-cash-transfer-is-selected-show-a-sub-category-dropdown-with-options-family-needtopay-repay-when-repay-is-selected-as-sub-category-show-a-required-text-input-field-labelled-person-name-to-capture-whose-repayment-this-is-apply-a-distinct-color-coded-badge-for-cash-transfer-update-categoryutils-ts-to-register-these-new-categories-and-sub-categories",
+      "title": "Add 'Cash Transfer' to the expense category dropdown in the Add Expense form. When 'Cash Transfer' is selected, show a sub-category dropdown with options: Family, NeedToPay, Repay. When 'Repay' is selected as sub-category, show a required text input field labelled 'Person Name' to capture whose repayment this is. Apply a distinct color-coded badge for Cash Transfer. Update categoryUtils.ts to register these new categories and sub-categories.",
+      "reqIds": [
+        "REQ-9"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-a-dedicated-repay-report-tab-or-section-accessible-from-the-bottom-navigation-this-report-dynamically-lists-all-repay-cash-transfer-repay-expense-entries-grouped-by-person-name-for-each-person-display-their-name-prominently-highlighted-e-g-amber-saffron-highlight-a-list-of-all-their-repay-entries-date-amount-note-and-a-total-amount-owed-by-that-person-the-report-must-update-in-real-time-as-new-repay-entries-are-added-or-deleted",
+      "title": "Create a dedicated 'Repay Report' tab or section accessible from the bottom navigation. This report dynamically lists all Repay (Cash Transfer > Repay) expense entries grouped by person name. For each person, display their name prominently highlighted (e.g., amber/saffron highlight), a list of all their repay entries (date, amount, note), and a total amount owed by that person. The report must update in real-time as new Repay entries are added or deleted.",
+      "reqIds": [
+        "REQ-10"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-others-to-the-expense-category-dropdown-in-the-add-expense-form-addexpense-tsx-when-others-is-selected-the-notes-field-must-become-mandatory-required-validation-the-form-must-not-submit-unless-the-notes-field-contains-a-non-empty-value-when-others-is-the-selected-category-display-a-validation-error-message-e-g-note-is-required-for-others-category-if-the-user-tries-to-submit-without-a-note-register-others-in-categoryutils-ts-with-a-distinct-color-coded-badge-consistent-with-the-existing-badge-design",
+      "title": "Add 'Others' to the expense category dropdown in the Add Expense form (AddExpense.tsx). When 'Others' is selected, the Notes field must become mandatory (required validation). The form must not submit unless the Notes field contains a non-empty value when 'Others' is the selected category. Display a validation error message (e.g., 'Note is required for Others category') if the user tries to submit without a note. Register 'Others' in categoryUtils.ts with a distinct color-coded badge consistent with the existing badge design.",
+      "reqIds": [
+        "REQ-12"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-category-based-filtering-to-the-history-tab-history-tsx-display-a-horizontally-scrollable-row-of-filter-chips-or-buttons-for-each-available-expense-category-food-tea-cooldrink-petrol-fruits-recharge-shopping-trip-bike-repair-medical-cash-transfer-others-plus-an-all-option-selecting-a-category-chip-filters-the-displayed-expense-list-to-only-show-entries-of-that-category-combined-with-any-active-date-date-range-filter-the-grand-total-and-per-category-summary-shown-below-the-list-must-reflect-only-the-currently-filtered-results-i-e-respect-both-the-active-date-filter-and-the-active-category-filter-simultaneously",
+      "title": "Add category-based filtering to the History tab (History.tsx). Display a horizontally scrollable row of filter chips or buttons for each available expense category (Food, Tea, Cooldrink, Petrol, Fruits, Recharge, Shopping, Trip, Bike Repair, Medical, Cash Transfer, Others) plus an 'All' option. Selecting a category chip filters the displayed expense list to only show entries of that category, combined with any active date/date-range filter. The grand total (and per-category summary) shown below the list must reflect only the currently filtered results — i.e., respect both the active date filter and the active category filter simultaneously.",
+      "reqIds": [
+        "REQ-13"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-diagnose-and-fix-the-failed-to-save-please-try-again-error-that-occurs-when-submitting-the-add-expense-form-the-error-is-visible-in-the-screenshot-when-attempting-to-save-a-food-biryani-expense-for-150-investigate-the-backend-addexpense-call-in-usequeries-ts-and-the-motoko-actor-in-backend-main-mo-ensure-the-category-variant-passed-from-the-frontend-including-the-others-variant-introduced-in-the-latest-migration-exactly-matches-the-variant-type-declared-in-main-mo-verify-that-migration-mo-is-not-causing-a-schema-mismatch-that-breaks-deserialization-of-the-stable-state-on-canister-upgrade-fix-any-type-mismatch-incorrect-variant-tag-or-serialization-issue-so-that-all-categories-food-tea-cooldrink-petrol-fruits-recharge-shopping-trip-bike-repair-medical-cash-transfer-others-save-successfully-without-error",
+      "title": "Diagnose and fix the 'Failed to save. Please try again.' error that occurs when submitting the Add Expense form. The error is visible in the screenshot when attempting to save a Food > Biryani expense for ₹150. Investigate the backend `addExpense` call in `useQueries.ts` and the Motoko actor in `backend/main.mo` — ensure the Category variant passed from the frontend (including the `#others` variant introduced in the latest migration) exactly matches the variant type declared in `main.mo`. Verify that `migration.mo` is not causing a schema mismatch that breaks deserialization of the stable state on canister upgrade. Fix any type mismatch, incorrect variant tag, or serialization issue so that all categories (Food, Tea, Cooldrink, Petrol, Fruits, Recharge, Shopping, Trip, Bike Repair, Medical, Cash Transfer, Others) save successfully without error.",
+      "reqIds": [
+        "REQ-14"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Create a backend data model and API to store expense entries. Each entry must include: a unique ID, date (YYYY-MM-DD), expense category (one of: Food, Tea, Cooldrink, Petrol, Fruits, Recharge, Shopping, Trip, Bike Repair), sub-category (optional, based on category), amount in Indian Rupees (Nat), and an optional note. Expose CRUD operations: addExpense, getExpenses, getExpensesByDate, getExpensesByDateRange, deleteExpense.",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "Add 'Medical' as a new expense category with sub-categories: Medicine, Hospital.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-3",
+      "summary": "Add 'Cash Transfer' as a new expense category with sub-categories: Family, NeedToPay, Repay. When 'Repay' is selected, show a required Name field. Create a dedicated dynamic Repay Report that groups/highlights repay entries by person name, showing how much each person needs to repay you.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-4",
+      "summary": "Extend the backend Expense data model to support two new expense categories: 'Medical' (with sub-categories: Medicine, Hospital) and 'Cash Transfer' (with sub-categories: Family, NeedToPay, Repay). For Repay entries, add an optional 'repayName' field (Text) to store the person's name. Update addExpense, getExpenses, getExpensesByDate, getExpensesByDateRange, and deleteExpense to handle these new categories and the repayName field.",
+      "reqIds": [
+        "REQ-7"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-5",
+      "summary": "Add 'Others' as a new expense category. When 'Others' is selected, the Notes field becomes mandatory (required) before submission.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-6",
+      "summary": "Add category-based filtering to the History tab (filter by Shopping, Tea, Food, etc.). Show a grand total based on the filtered results, supporting both single date and custom date range selection.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-7",
+      "summary": "Add 'Others' as a new expense category in the backend data model. Extend the Category variant type in main.mo to include an 'Others' variant (no sub-categories). Ensure addExpense, getExpenses, getExpensesByDate, getExpensesByDateRange, and deleteExpense all handle the new 'Others' category. Update migration.mo to preserve existing records without modification when upgrading.",
+      "reqIds": [
+        "REQ-11"
+      ],
+      "status": "pending"
+    }
+  ],
+  "gameProjectType": "none",
+  "projectName": "Expense Tracker",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}

@@ -1,0 +1,44 @@
+{
+  "kind": "build_request",
+  "title": "Fix expense saving error on Add Expense form",
+  "projectName": "Rupee Tracker",
+  "priority": "high",
+  "requirements": [
+    {
+      "id": "REQ-14",
+      "text": "Diagnose and fix the 'Failed to save. Please try again.' error that occurs when submitting the Add Expense form. The error is visible in the screenshot when attempting to save a Food > Biryani expense for ₹150. Investigate the backend `addExpense` call in `useQueries.ts` and the Motoko actor in `backend/main.mo` — ensure the Category variant passed from the frontend (including the `#others` variant introduced in the latest migration) exactly matches the variant type declared in `main.mo`. Verify that `migration.mo` is not causing a schema mismatch that breaks deserialization of the stable state on canister upgrade. Fix any type mismatch, incorrect variant tag, or serialization issue so that all categories (Food, Tea, Cooldrink, Petrol, Fruits, Recharge, Shopping, Trip, Bike Repair, Medical, Cash Transfer, Others) save successfully without error.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-1",
+          "msg-7"
+        ],
+        "quotes": [
+          "Am getting error while saving the expense.",
+          "Failed to save. Please try again."
+        ]
+      },
+      "acceptanceCriteria": [
+        "Submitting a valid expense entry (any category, any subcategory combination) no longer shows 'Failed to save. Please try again.'",
+        "A Food > Biryani expense with a valid amount saves successfully and appears in the History tab",
+        "All other categories (Tea, Cooldrink, Petrol, Fruits, Recharge, Shopping, Trip, Bike Repair, Medical, Cash Transfer, Others) also save without error",
+        "The backend `addExpense` Motoko function accepts all Category variants defined in main.mo without trapping or returning an error",
+        "After a successful save, the form resets and a success confirmation is shown to the user"
+      ]
+    }
+  ],
+  "constraints": [
+    "Do not change the expense data schema or remove any existing Category variants",
+    "Do not modify files listed in frontend.immutablePaths",
+    "Preserve all existing expense records — migration.mo must not drop or corrupt stored data"
+  ],
+  "nonGoals": [
+    "Adding new expense categories or subcategories",
+    "UI redesign or layout changes",
+    "Changes to History, Repay Report, or filtering functionality"
+  ],
+  "imageRequirements": {
+    "required": [],
+    "edits": []
+  }
+}

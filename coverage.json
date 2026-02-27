@@ -1,0 +1,46 @@
+{
+  "kind": "coverage_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-27T20:14:55.182Z",
+  "sources": {
+    "buildRequest": true,
+    "implementationPlan": true
+  },
+  "requirements": {
+    "total": 1,
+    "implemented": 1,
+    "items": [
+      {
+        "id": "REQ-14",
+        "summary": "Diagnose and fix the 'Failed to save. Please try again.' error that occurs when submitting the Add Expense form. The error is visible in the screenshot when attempting to save a Food > Biryani expense for ₹150. Investigate the backend `addExpense` call in `useQueries.ts` and the Motoko actor in `backend/main.mo` — ensure the Category variant passed from the frontend (including the `#others` variant introduced in the latest migration) exactly matches the variant type declared in `main.mo`. Verify that `migration.mo` is not causing a schema mismatch that breaks deserialization of the stable state on canister upgrade. Fix any type mismatch, incorrect variant tag, or serialization issue so that all categories (Food, Tea, Cooldrink, Petrol, Fruits, Recharge, Shopping, Trip, Bike Repair, Medical, Cash Transfer, Others) save successfully without error.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/lib/categoryUtils.ts",
+          "frontend/src/hooks/useQueries.ts",
+          "frontend/src/pages/AddExpense.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/hooks/useQueries.ts"
+        ]
+      }
+    ]
+  },
+  "changedFiles": [
+    "backend/main.mo",
+    "build-request.json",
+    "feature_evidence.json",
+    "frontend-file-summaries.txt",
+    "frontend-implementation-plan.json",
+    "frontend/src/App.tsx",
+    "frontend/src/backend.d.ts",
+    "frontend/src/backend.ts",
+    "frontend/src/components/AppHeader.tsx",
+    "frontend/src/declarations/backend.did.d.ts",
+    "frontend/src/declarations/backend.did.js",
+    "frontend/src/hooks/useQueries.ts",
+    "project_state.json",
+    "scratch/component-selection.json",
+    "spec.md",
+    "spec_vs_diff_report.json"
+  ]
+}

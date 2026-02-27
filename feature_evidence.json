@@ -1,0 +1,24 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-diagnose-and-fix-the-failed-to-save-please-try-again-error-that-occurs-when-submitting-the-add-expense-form-the-error-is-visible-in-the-screenshot-when-attempting-to-save-a-food-biryani-expense-for-150-investigate-the-backend-addexpense-call-in-usequeries-ts-and-the-motoko-actor-in-backend-main-mo-ensure-the-category-variant-passed-from-the-frontend-including-the-others-variant-introduced-in-the-latest-migration-exactly-matches-the-variant-type-declared-in-main-mo-verify-that-migration-mo-is-not-causing-a-schema-mismatch-that-breaks-deserialization-of-the-stable-state-on-canister-upgrade-fix-any-type-mismatch-incorrect-variant-tag-or-serialization-issue-so-that-all-categories-food-tea-cooldrink-petrol-fruits-recharge-shopping-trip-bike-repair-medical-cash-transfer-others-save-successfully-without-error",
+      "featureTitle": "Diagnose and fix the 'Failed to save. Please try again.' error that occurs when submitting the Add Expense form. The error is visible in the screenshot when attempting to save a Food > Biryani expense for ₹150. Investigate the backend `addExpense` call in `useQueries.ts` and the Motoko actor in `backend/main.mo` — ensure the Category variant passed from the frontend (including the `#others` variant introduced in the latest migration) exactly matches the variant type declared in `main.mo`. Verify that `migration.mo` is not causing a schema mismatch that breaks deserialization of the stable state on canister upgrade. Fix any type mismatch, incorrect variant tag, or serialization issue so that all categories (Food, Tea, Cooldrink, Petrol, Fruits, Recharge, Shopping, Trip, Bike Repair, Medical, Cash Transfer, Others) save successfully without error.",
+      "files": [
+        "frontend/src/hooks/useQueries.ts"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "authorization@4.0.0"
+      ],
+      "testIds": [
+        "REQ-14"
+      ],
+      "confidence": "high"
+    }
+  ]
+}

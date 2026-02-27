@@ -1,0 +1,23 @@
+{
+  "backend/main.mo": "Motoko actor defining the expense tracker backend with Category/Expense/UserProfile types, CRUD operations for expenses, and user profile management, all gated behind role-based access control.",
+  "feature_evidence.json": "Feature evidence report documenting a high-confidence fix for the 'Failed to save' error on the Add Expense form, tracing it to a Category variant mismatch between the frontend and the Motoko backend.",
+  "frontend-file-summaries.txt": "JSON map of frontend source files to short summaries, serving as a quick reference for what each frontend module does.",
+  "frontend/index.css": "Global CSS entry point that sets up Tailwind directives and defines light/dark OKLCH CSS custom properties for the design system.",
+  "frontend/index.html": "HTML shell with mobile/PWA meta tags, amber theme color, and a root div that mounts the React app via main.tsx.",
+  "frontend/src/App.tsx": "Root React component that conditionally renders a login screen, a first-time profile setup modal, or the full tabbed expense tracker (Add, History, Repay) based on authentication and profile state.",
+  "frontend/src/components/AppHeader.tsx": "Sticky header component displaying the app logo, title, INR badge, and an Internet Identity login/logout button with loading state.",
+  "frontend/src/components/BottomNavigation.tsx": "Fixed bottom tab bar with three tabs (Add Expense, History, Repay Report), active indicator line, and accessible button labels.",
+  "frontend/src/components/CategoryBadge.tsx": "Displays a color-coded pill badge for an expense category by extracting the category kind and looking up its label, icon, and CSS class from categoryUtils.",
+  "frontend/src/hooks/useActor.ts": "Custom hook that creates and caches an ICP backend actor using React Query, supporting both anonymous and authenticated (Internet Identity) usage, and invalidates dependent queries when the actor changes.",
+  "frontend/src/hooks/useInternetIdentity.ts": "Provides an Internet Identity authentication context and hook, managing login/logout state via AuthClient and exposing identity, login status, and helper flags to child components.",
+  "frontend/src/hooks/useQueries.ts": "Defines React Query hooks for all backend data operations including fetching/saving user profiles, querying expenses by date or range, and adding/deleting expenses.",
+  "frontend/src/index.css": "Global stylesheet that sets up Tailwind CSS, defines light/dark mode CSS custom properties for the design system, and declares utility and component classes for category badges.",
+  "frontend/src/lib/categoryUtils.ts": "Utility module providing category metadata (labels, icons, badge classes, sub-categories), helper functions to extract category kind, build typed Category objects, and format dates.",
+  "frontend/src/main.tsx": "Application entry point that mounts the React app wrapped with QueryClientProvider and InternetIdentityProvider.",
+  "frontend/src/pages/AddExpense.tsx": "Page component with a form for adding a new expense, handling category/sub-category selection, amount, note, repay name, validation, and displaying a success banner on submission.",
+  "frontend/src/pages/History.tsx": "Expense history page with filter modes (all/date/range), category filtering via chips, sorted expense list with delete support, and category totals summary. Uses React Query hooks for data fetching and displays loading skeletons and alert dialogs for deletion confirmation.",
+  "frontend/src/pages/RepayReport.tsx": "Report page that filters all expenses for 'Repay' cash transfer entries, groups them by person name, and displays per-person totals alongside a grand total of outstanding repayments.",
+  "frontend/src/utils/urlParams.ts": "Utility module for reading URL query parameters from both regular and hash-based routing, persisting them to sessionStorage, and cleaning sensitive params from the URL hash without page reload.",
+  "frontend/tailwind.config.js": "Tailwind CSS configuration extending the default theme with custom fonts (Nunito, Poppins), OKLCH-based color tokens, border radius variables, and plugins for typography, container queries, and animations.",
+  "project_state.json": "Project state metadata describing the expense tracker app's features, architecture (localStorage-based, mobile-first), known issues, and versioned feature list for build planning purposes."
+}
