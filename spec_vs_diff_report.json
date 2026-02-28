@@ -1,36 +1,41 @@
 {
   "kind": "spec_vs_diff_report",
   "version": "1.0",
-  "generatedAt": "2026-02-27T20:14:55.178Z",
-  "summary": "The diff shows fixes to both the backend (main.mo) and frontend (useQueries.ts) to resolve the Category variant mismatch. The backend now includes #others in the Category type, and the frontend useQueries.ts passes the Category correctly. The categoryUtils.ts summary confirms buildCategory was updated to return { __kind__: 'others', others: null } for the others case. Most of REQ-14 appears addressed, but the success confirmation after form submission and form reset behavior are not clearly evidenced in the diff.",
+  "generatedAt": "2026-02-28T08:06:08.132Z",
+  "summary": "The diff implements REQ-15 (form redesign), REQ-17 (high-spend row highlighting), REQ-18 (celebration animation with confetti and coin character), and partially addresses REQ-16 (background usage referenced in pages). However, the generated background image asset and celebration coin image are not added as new files. REQ-19 (backend data preservation) shows no backend file changes at all.",
   "missing_requirements": [
     {
-      "id": "REQ-14",
-      "requirement": "After a successful save, the form resets and a success confirmation is shown to the user",
-      "reason": "The diff does not show changes to AddExpense.tsx that would implement a success confirmation message or form reset after a successful expense save. The frontend-file-summaries.txt only mentions AddExpense.tsx changes related to mandatory Notes for 'Others' category, not success confirmation or form reset behavior.",
+      "id": "REQ-16",
+      "requirement": "Render the background as a generated SVG or PNG asset placed in frontend/public/assets/generated. Background asset is served from frontend/public/assets/generated.",
+      "reason": "No new files were added in the diff. The generated background asset (expense-bg-pattern.dim_800x800.png or equivalent SVG) is not present in frontend/public/assets/generated. The diff shows zero added files.",
       "evidence": [
         "frontend/src/pages/AddExpense.tsx",
-        "frontend-file-summaries.txt"
+        "frontend/src/pages/History.tsx"
       ]
-    }
-  ],
-  "hallucinated_features": [
+    },
     {
-      "description": "AddExpense form makes the Notes field mandatory when 'Others' category is selected, with a visible hint message, red asterisk label, inline validation error, and form submission blocked until a note is provided.",
-      "reason": "This behavior was implemented in AddExpense.tsx as noted in frontend-file-summaries.txt, but was not requested in REQ-14 or any other requirement in the build request.",
+      "id": "REQ-18",
+      "requirement": "The celebration-coin.dim_400x400.png image asset must be present at frontend/public/assets/generated for the celebration overlay to display correctly.",
+      "reason": "No new files were added in the diff. The celebration coin image referenced in AddExpense.tsx as /assets/generated/celebration-coin.dim_400x400.png has no corresponding added file. Code has an onError fallback but the asset itself is absent.",
       "evidence": [
-        "frontend-file-summaries.txt",
         "frontend/src/pages/AddExpense.tsx"
       ]
+    },
+    {
+      "id": "REQ-19",
+      "requirement": "Ensure all existing backend expense data is fully preserved. backend/main.mo must retain all stable variables. If migration needed, generate or update backend/migration.mo.",
+      "reason": "No backend files were modified or added in the diff. There is no evidence of backend/main.mo being reviewed for stable variable preservation or backend/migration.mo being created or updated.",
+      "evidence": []
     }
   ],
-  "confidence": 0.72,
+  "hallucinated_features": [],
+  "confidence": 0.82,
   "changed_files": [
-    "backend/main.mo",
     "frontend-file-summaries.txt",
-    "frontend/src/App.tsx",
-    "frontend/src/components/AppHeader.tsx",
-    "frontend/src/hooks/useQueries.ts",
+    "frontend/src/index.css",
+    "frontend/src/pages/AddExpense.tsx",
+    "frontend/src/pages/History.tsx",
+    "frontend/tailwind.config.js",
     "project_state.json"
   ]
 }

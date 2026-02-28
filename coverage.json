@@ -1,43 +1,82 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-27T20:14:55.182Z",
+  "generatedAt": "2026-02-28T08:06:08.136Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
-    "total": 1,
-    "implemented": 1,
+    "total": 5,
+    "implemented": 4,
     "items": [
       {
-        "id": "REQ-14",
-        "summary": "Diagnose and fix the 'Failed to save. Please try again.' error that occurs when submitting the Add Expense form. The error is visible in the screenshot when attempting to save a Food > Biryani expense for ₹150. Investigate the backend `addExpense` call in `useQueries.ts` and the Motoko actor in `backend/main.mo` — ensure the Category variant passed from the frontend (including the `#others` variant introduced in the latest migration) exactly matches the variant type declared in `main.mo`. Verify that `migration.mo` is not causing a schema mismatch that breaks deserialization of the stable state on canister upgrade. Fix any type mismatch, incorrect variant tag, or serialization issue so that all categories (Food, Tea, Cooldrink, Petrol, Fruits, Recharge, Shopping, Trip, Bike Repair, Medical, Cash Transfer, Others) save successfully without error.",
+        "id": "REQ-15",
+        "summary": "Redesign the Add Expense form in AddExpense.tsx so that the category dropdown and all dependent fields are clearly separated and stacked vertically with no visual overlap. The category selector must render as a full-width visually distinct card/selector (not a small inline dropdown that overlaps other fields). The sub-category selector must appear below the category selector in its own clearly labelled row only when a category with sub-categories is selected. Amount, Notes, and all other fields must each occupy their own clearly separated full-width row. No field labels or input rows should visually overlap with the dropdown options list at any time.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/lib/categoryUtils.ts",
-          "frontend/src/hooks/useQueries.ts",
           "frontend/src/pages/AddExpense.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/hooks/useQueries.ts"
+          "frontend/src/pages/AddExpense.tsx"
         ]
+      },
+      {
+        "id": "REQ-16",
+        "summary": "Add a decorative background to the Add Expense and History pages (and optionally the full app shell) featuring soft, semi-transparent themed symbols — Indian Rupee (₹), shopping bag, medical cross/pill, food bowl, petrol pump — arranged as a subtle repeating pattern. The background must not reduce text readability or contrast. Use warm amber/saffron tones consistent with the existing color palette. Render the background as a generated SVG or PNG asset placed in frontend/public/assets/generated.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/pages/AddExpense.tsx",
+          "frontend/src/pages/History.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/pages/AddExpense.tsx",
+          "frontend/src/pages/History.tsx"
+        ]
+      },
+      {
+        "id": "REQ-17",
+        "summary": "In the History page (History.tsx), visually highlight expense rows where the amount is high. Define 'high amount' as any single expense entry that is ≥ ₹500. Highlighted rows should display a visually distinct treatment — e.g., a bold amber/red-tinted background, a flame or alert icon, or a prominent border — that makes them stand out in the list. The highlight must show alongside the existing category badge and sub-category label so the user can immediately identify the category and sub-category of high-spend entries.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/pages/History.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/pages/History.tsx"
+        ]
+      },
+      {
+        "id": "REQ-18",
+        "summary": "After the user successfully submits an expense entry in AddExpense.tsx, if the amount is ≥ ₹500, display a fun celebration overlay or inline animation (e.g., falling coins, a cartoon character reacting, or confetti) and/or play a short playful sound effect. The animation should auto-dismiss after 2–3 seconds without requiring user interaction. For entries below ₹500, the existing success banner is sufficient — no celebration needed.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/pages/AddExpense.tsx",
+          "frontend/public/assets/generated/celebration-sound.mp3"
+        ],
+        "matchedFiles": [
+          "frontend/src/pages/AddExpense.tsx"
+        ]
+      },
+      {
+        "id": "REQ-19",
+        "summary": "Ensure all existing backend expense data is fully preserved across this upgrade. The backend Motoko actor in backend/main.mo must retain all stable variables and existing expense records. If any migration is needed, generate or update backend/migration.mo to migrate existing data without loss. The frontend must continue to read and display all previously saved expenses after the upgrade is deployed.",
+        "status": "unknown",
+        "plannedFiles": [],
+        "matchedFiles": []
       }
     ]
   },
   "changedFiles": [
-    "backend/main.mo",
     "build-request.json",
     "feature_evidence.json",
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
-    "frontend/src/App.tsx",
-    "frontend/src/backend.d.ts",
-    "frontend/src/backend.ts",
-    "frontend/src/components/AppHeader.tsx",
-    "frontend/src/declarations/backend.did.d.ts",
-    "frontend/src/declarations/backend.did.js",
-    "frontend/src/hooks/useQueries.ts",
+    "frontend/public/assets/generated/celebration-coin.dim_400x400.png",
+    "frontend/public/assets/generated/expense-bg-pattern.dim_800x800.png",
+    "frontend/src/index.css",
+    "frontend/src/pages/AddExpense.tsx",
+    "frontend/src/pages/History.tsx",
+    "frontend/tailwind.config.js",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",

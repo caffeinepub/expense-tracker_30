@@ -1,33 +1,87 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Fix expense saving error on Add Expense form",
+  "title": "Improve form UX, add themed background, highlight high-spend history rows, celebration animation on expensive entry",
   "requirements": [
     {
-      "id": "REQ-14",
-      "summary": "Diagnose and fix the 'Failed to save. Please try again.' error when submitting the Add Expense form by ensuring the Category variant passed from the frontend exactly matches the backend type definition, fixing any type mismatch or serialization issues so all categories save successfully",
+      "id": "REQ-15",
+      "summary": "Redesign Add Expense form with clear vertical stacking, no visual overlap between category dropdown and other fields, full-width selectors",
       "acceptanceCriteria": [
-        "Submitting a valid expense entry (any category, any subcategory combination) no longer shows 'Failed to save. Please try again.'",
-        "A Food > Biryani expense with a valid amount saves successfully and appears in the History tab",
-        "All other categories (Tea, Cooldrink, Petrol, Fruits, Recharge, Shopping, Trip, Bike Repair, Medical, Cash Transfer, Others) also save without error",
-        "The backend `addExpense` Motoko function accepts all Category variants defined in main.mo without trapping or returning an error",
-        "After a successful save, the form resets and a success confirmation is shown to the user"
+        "Opening the category selector does not visually overlap Amount, Notes, or Save Expense button areas",
+        "Each form field (Date, Expense Type, Sub-category, Amount, Notes) is in its own distinct full-width stacked row",
+        "Sub-category row is hidden when no sub-category category is selected and appears smoothly below the category row when applicable",
+        "All category options are individually tappable with adequate tap target size (min 44px height)",
+        "Form remains fully functional on 320px–430px screen widths"
       ],
       "file_operations": [
         {
-          "path": "frontend/src/lib/categoryUtils.ts",
+          "path": "frontend/src/pages/AddExpense.tsx",
           "operation": "modify",
-          "description": "Review and fix the buildCategoryVariant function to ensure it constructs Category discriminated union objects that exactly match the backend type definition in backend.d.ts. Verify that the __kind__ property and nested structure for each category variant (tea, cashTransfer, coolDrink, petrol, food, trip, others, recharge, bikeRepair, fruits, shopping, medical) match the backend interface. Pay special attention to the 'others' variant and ensure all variants use the correct property name as the discriminator. Verify that null variants use the correct structure {__kind__: 'categoryName', categoryName: null} and enum-based variants correctly instantiate the nested enum value."
-        },
-        {
-          "path": "frontend/src/hooks/useQueries.ts",
-          "operation": "modify",
-          "description": "Review the useAddExpense mutation and its call to actor.addExpense. Verify that the Category parameter being passed is correctly structured according to the backend interface. Add debug logging (temporary or conditional) to inspect the exact Category object being sent to the backend. Ensure that the buildCategoryVariant call produces a valid discriminated union that matches the backend type. Add error handling to capture and display more specific error messages from the backend to help diagnose type mismatches or serialization failures."
-        },
+          "description": "Refactor the form layout to display each field in a distinct full-width stacked row. Replace the inline category dropdown with a full-width visually distinct card-based selector where each category option is a tappable card (min 44px height). Render the sub-category selector below the category selector in its own clearly labelled row, shown only when a category with sub-categories is selected. Ensure Amount, Notes, Repay Name, and Save Expense button each occupy separate full-width rows with no visual overlap. Use z-index and spacing to prevent the category options list from overlapping other fields. Test responsiveness on 320px–430px screen widths."
+        }
+      ]
+    },
+    {
+      "id": "REQ-16",
+      "summary": "Add decorative background pattern featuring themed finance symbols on Add Expense and History pages using generated assets",
+      "acceptanceCriteria": [
+        "Background pattern is visible on the Add Expense and History pages",
+        "Symbols include at least: ₹ (Rupee), shopping bag, medical cross, food icon",
+        "Background does not reduce readability of any form field, label, or list item",
+        "Background uses warm amber/saffron palette consistent with existing theme",
+        "Background asset is served from frontend/public/assets/generated"
+      ],
+      "file_operations": [
         {
           "path": "frontend/src/pages/AddExpense.tsx",
           "operation": "modify",
-          "description": "Review the form submission handler and ensure the Category variant construction is correct when calling the addExpense mutation. Verify that the category and subcategory values from the form state are correctly passed to buildCategoryVariant before submission. Improve error handling to display specific error messages returned from the backend or mutation. Add validation to ensure that the category and subcategory combination is valid before submission. After a successful save, ensure the form resets properly and displays a success confirmation message to the user."
+          "description": "Add a background image reference to the generated pattern asset frontend/public/assets/generated/expense-bg-pattern.dim_800x800.png using CSS background-image. Apply the background as a repeating tiled pattern with low opacity (0.05–0.15) to ensure text readability. Position it as a fixed or absolute layer behind the form content. Verify contrast ratios remain accessible."
+        },
+        {
+          "path": "frontend/src/pages/History.tsx",
+          "operation": "modify",
+          "description": "Add a background image reference to the generated pattern asset frontend/public/assets/generated/expense-bg-pattern.dim_800x800.png using CSS background-image. Apply the background as a repeating tiled pattern with low opacity (0.05–0.15) to ensure text readability. Position it behind the history list and filter controls. Verify contrast ratios remain accessible for all list items and labels."
+        }
+      ]
+    },
+    {
+      "id": "REQ-17",
+      "summary": "Visually highlight expense rows in History page where amount ≥ ₹500 with distinct styling, while keeping category badge and sub-category visible",
+      "acceptanceCriteria": [
+        "Expense rows with amount ≥ ₹500 render with a visually distinct highlight (color tint, icon, or border)",
+        "The category badge and sub-category label remain clearly visible on highlighted rows",
+        "Rows below ₹500 render with the normal/default style",
+        "Highlight is visible in both date-filtered and unfiltered history views",
+        "Highlight is accessible (contrast ratio maintained for text)"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/History.tsx",
+          "operation": "modify",
+          "description": "In the expense list rendering logic, conditionally apply a visually distinct highlight style to rows where expense.amount >= 500. Use a bold amber or red-tinted background (e.g., bg-amber-100 border-l-4 border-amber-600) or add a flame/alert icon next to the amount. Ensure the CategoryBadge and sub-category label remain clearly visible on highlighted rows. Verify the highlight renders correctly in all filter modes (all/date/range) and maintains accessible contrast ratios for text."
+        }
+      ]
+    },
+    {
+      "id": "REQ-18",
+      "summary": "Display celebration animation and playful sound when user submits an expense ≥ ₹500, auto-dismissing after 2–3 seconds",
+      "acceptanceCriteria": [
+        "Submitting an expense ≥ ₹500 triggers a visible celebration animation (confetti, coins, or cute character)",
+        "Animation auto-dismisses after 2–3 seconds",
+        "A short playful sound effect plays on expensive submission (with graceful fallback if audio is blocked)",
+        "Submitting an expense < ₹500 shows only the normal success banner (no animation)",
+        "The celebration does not block the user from immediately adding another expense after it dismisses"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/AddExpense.tsx",
+          "operation": "modify",
+          "description": "After successful expense submission via addExpenseMutation, check if the submitted amount >= 500. If true, display a celebration overlay featuring the generated celebration-coin.dim_400x400.png asset from frontend/public/assets/generated with a fade-in animation (e.g., confetti particles or the coin character bouncing). Simultaneously play a short playful sound effect (e.g., a coin clink or cheerful chime) using the HTML5 Audio API with a try-catch fallback for blocked audio. Auto-dismiss the overlay after 2–3 seconds using setTimeout. Ensure the overlay does not block form interaction and that the success banner still shows for amounts < 500 without triggering the celebration."
+        },
+        {
+          "path": "frontend/public/assets/generated/celebration-sound.mp3",
+          "operation": "create",
+          "description": "Placeholder entry for a short playful sound effect file (e.g., coin clink, cheerful chime) to be played on expensive submission. The actual audio file will be generated or sourced separately. Reference this file in AddExpense.tsx using new Audio('/assets/generated/celebration-sound.mp3')."
         }
       ]
     }
