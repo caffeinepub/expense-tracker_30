@@ -1,15 +1,11 @@
 # Specification
 
 ## Summary
-**Goal:** Improve the Add Expense form layout, add a themed decorative background, highlight high-spend rows in History, show a celebration animation for expensive entries, and preserve all existing backend data.
+**Goal:** Fix the infinite "Loading your profile..." screen that prevents users from accessing the Rupee Tracker app, and reset backend stable state to resolve the underlying canister issue.
 
 **Planned changes:**
-- Redesign the Add Expense form so the category dropdown, sub-category selector, Amount, Notes, and all other fields are stacked in clearly separated full-width rows with no visual overlap between the dropdown list and other fields
-- Show the sub-category row only when a category with sub-categories is selected, appearing smoothly below the category row
-- Add a soft repeating decorative background pattern (Rupee ₹, shopping bag, medical cross, food bowl, petrol pump symbols) in warm amber/saffron tones to the Add Expense and History pages, served from frontend/public/assets/generated, without reducing text readability
-- In the History page, highlight expense rows with amount ≥ ₹500 with a visually distinct treatment (color tint, icon, or border) while keeping the category badge and sub-category label clearly visible
-- After submitting an expense ≥ ₹500, display a fun celebration overlay animation (e.g., falling coins or confetti with a cute coin character) and play a short playful sound effect; the animation auto-dismisses after 2–3 seconds
-- Entries below ₹500 continue to show only the normal success banner with no celebration
-- Ensure all existing backend stable variables and expense records are preserved across the upgrade; update migration.mo if needed so no data is lost
+- Add a timeout (5 seconds) and error boundary to the profile-fetching logic so that if the profile query fails, errors, or returns null/undefined, the app falls back to the unauthenticated login state instead of spinning forever
+- Fix the loading guard in App.tsx to not block rendering when the actor or identity is not yet ready
+- Reset all stable variables (expenses, userProfiles, or equivalent) in the backend Motoko canister to empty collections so the canister responds correctly to profile queries
 
-**User-visible outcome:** The Add Expense form is easy to use with clearly separated fields and no overlapping dropdowns. Both the Add Expense and History pages have a decorative themed background. High-spend entries (≥ ₹500) are visually highlighted in History, and submitting an expensive entry triggers a fun celebration animation. All previously saved expenses remain accessible after the upgrade.
+**User-visible outcome:** Opening the app no longer results in an indefinite loading spinner. If the profile fetch fails or times out, the user sees the login screen within 5 seconds and can authenticate via Internet Identity.

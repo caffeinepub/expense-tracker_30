@@ -1,87 +1,27 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Improve form UX, add themed background, highlight high-spend history rows, celebration animation on expensive entry",
+  "title": "Fix infinite loading screen — app stuck on 'Loading your profile...'",
   "requirements": [
     {
-      "id": "REQ-15",
-      "summary": "Redesign Add Expense form with clear vertical stacking, no visual overlap between category dropdown and other fields, full-width selectors",
+      "id": "REQ-20",
+      "summary": "Fix the infinite 'Loading your profile...' state by adding timeout and error fallback logic to the profile-fetching hook and App.tsx loading guard",
       "acceptanceCriteria": [
-        "Opening the category selector does not visually overlap Amount, Notes, or Save Expense button areas",
-        "Each form field (Date, Expense Type, Sub-category, Amount, Notes) is in its own distinct full-width stacked row",
-        "Sub-category row is hidden when no sub-category category is selected and appears smoothly below the category row when applicable",
-        "All category options are individually tappable with adequate tap target size (min 44px height)",
-        "Form remains fully functional on 320px–430px screen widths"
+        "Opening the app no longer results in an indefinite 'Loading your profile...' spinner.",
+        "If the profile query fails or times out, the app falls back to the login/unauthenticated state within 5 seconds.",
+        "After the fallback, the user can see and interact with the login button to authenticate via Internet Identity.",
+        "No runtime errors are thrown during the loading-to-login fallback transition."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/pages/AddExpense.tsx",
+          "path": "frontend/src/hooks/useQueries.ts",
           "operation": "modify",
-          "description": "Refactor the form layout to display each field in a distinct full-width stacked row. Replace the inline category dropdown with a full-width visually distinct card-based selector where each category option is a tappable card (min 44px height). Render the sub-category selector below the category selector in its own clearly labelled row, shown only when a category with sub-categories is selected. Ensure Amount, Notes, Repay Name, and Save Expense button each occupy separate full-width rows with no visual overlap. Use z-index and spacing to prevent the category options list from overlapping other fields. Test responsiveness on 320px–430px screen widths."
-        }
-      ]
-    },
-    {
-      "id": "REQ-16",
-      "summary": "Add decorative background pattern featuring themed finance symbols on Add Expense and History pages using generated assets",
-      "acceptanceCriteria": [
-        "Background pattern is visible on the Add Expense and History pages",
-        "Symbols include at least: ₹ (Rupee), shopping bag, medical cross, food icon",
-        "Background does not reduce readability of any form field, label, or list item",
-        "Background uses warm amber/saffron palette consistent with existing theme",
-        "Background asset is served from frontend/public/assets/generated"
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/pages/AddExpense.tsx",
-          "operation": "modify",
-          "description": "Add a background image reference to the generated pattern asset frontend/public/assets/generated/expense-bg-pattern.dim_800x800.png using CSS background-image. Apply the background as a repeating tiled pattern with low opacity (0.05–0.15) to ensure text readability. Position it as a fixed or absolute layer behind the form content. Verify contrast ratios remain accessible."
+          "description": "Add a 5-second timeout mechanism to useGetCallerUserProfile hook using a custom timer that automatically marks the query as failed if it doesn't resolve within the timeout window. Update the hook to return an explicit error state when the timeout is reached, allowing downstream components to detect the failure and fall back to the login screen. Ensure the timeout is cleared when the query completes successfully or when the component unmounts. Verify the authorization component's usage instructions before implementing."
         },
         {
-          "path": "frontend/src/pages/History.tsx",
+          "path": "frontend/src/App.tsx",
           "operation": "modify",
-          "description": "Add a background image reference to the generated pattern asset frontend/public/assets/generated/expense-bg-pattern.dim_800x800.png using CSS background-image. Apply the background as a repeating tiled pattern with low opacity (0.05–0.15) to ensure text readability. Position it behind the history list and filter controls. Verify contrast ratios remain accessible for all list items and labels."
-        }
-      ]
-    },
-    {
-      "id": "REQ-17",
-      "summary": "Visually highlight expense rows in History page where amount ≥ ₹500 with distinct styling, while keeping category badge and sub-category visible",
-      "acceptanceCriteria": [
-        "Expense rows with amount ≥ ₹500 render with a visually distinct highlight (color tint, icon, or border)",
-        "The category badge and sub-category label remain clearly visible on highlighted rows",
-        "Rows below ₹500 render with the normal/default style",
-        "Highlight is visible in both date-filtered and unfiltered history views",
-        "Highlight is accessible (contrast ratio maintained for text)"
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/pages/History.tsx",
-          "operation": "modify",
-          "description": "In the expense list rendering logic, conditionally apply a visually distinct highlight style to rows where expense.amount >= 500. Use a bold amber or red-tinted background (e.g., bg-amber-100 border-l-4 border-amber-600) or add a flame/alert icon next to the amount. Ensure the CategoryBadge and sub-category label remain clearly visible on highlighted rows. Verify the highlight renders correctly in all filter modes (all/date/range) and maintains accessible contrast ratios for text."
-        }
-      ]
-    },
-    {
-      "id": "REQ-18",
-      "summary": "Display celebration animation and playful sound when user submits an expense ≥ ₹500, auto-dismissing after 2–3 seconds",
-      "acceptanceCriteria": [
-        "Submitting an expense ≥ ₹500 triggers a visible celebration animation (confetti, coins, or cute character)",
-        "Animation auto-dismisses after 2–3 seconds",
-        "A short playful sound effect plays on expensive submission (with graceful fallback if audio is blocked)",
-        "Submitting an expense < ₹500 shows only the normal success banner (no animation)",
-        "The celebration does not block the user from immediately adding another expense after it dismisses"
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/pages/AddExpense.tsx",
-          "operation": "modify",
-          "description": "After successful expense submission via addExpenseMutation, check if the submitted amount >= 500. If true, display a celebration overlay featuring the generated celebration-coin.dim_400x400.png asset from frontend/public/assets/generated with a fade-in animation (e.g., confetti particles or the coin character bouncing). Simultaneously play a short playful sound effect (e.g., a coin clink or cheerful chime) using the HTML5 Audio API with a try-catch fallback for blocked audio. Auto-dismiss the overlay after 2–3 seconds using setTimeout. Ensure the overlay does not block form interaction and that the success banner still shows for amounts < 500 without triggering the celebration."
-        },
-        {
-          "path": "frontend/public/assets/generated/celebration-sound.mp3",
-          "operation": "create",
-          "description": "Placeholder entry for a short playful sound effect file (e.g., coin clink, cheerful chime) to be played on expensive submission. The actual audio file will be generated or sourced separately. Reference this file in AddExpense.tsx using new Audio('/assets/generated/celebration-sound.mp3')."
+          "description": "Refactor the loading guard logic to check for query timeout/error states in addition to the existing loading checks. If the profile query has errored or timed out (as indicated by the updated useGetCallerUserProfile hook), immediately render the unauthenticated login screen instead of continuing to show the loading spinner. Ensure the guard does not block rendering when the actor or identity initialization is incomplete — use the actorFetching flag and query.isFetched to distinguish between initial actor setup and profile-fetch completion. Add error boundary handling around the profile fetch to catch any runtime exceptions and fall back gracefully to the login state."
         }
       ]
     }

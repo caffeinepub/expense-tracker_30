@@ -186,13 +186,15 @@ export default function App() {
     data: userProfile,
     isLoading: profileLoading,
     isFetched: profileFetched,
+    isError: profileError,
+    isTimedOut: profileTimedOut,
   } = useGetCallerUserProfile();
 
   const appId = encodeURIComponent(
     typeof window !== 'undefined' ? window.location.hostname : 'rupee-tracker'
   );
 
-  // Show loading spinner while initializing identity
+  // Show loading spinner while initializing identity (this is fast, local storage check)
   if (isInitializing) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
@@ -209,7 +211,12 @@ export default function App() {
     return <LoginScreen />;
   }
 
-  // Show loading while fetching profile
+  // If profile fetch timed out or errored, fall back to login screen so user can retry
+  if (profileTimedOut || profileError) {
+    return <LoginScreen />;
+  }
+
+  // Show loading while fetching profile (bounded by timeout above)
   if (profileLoading && !profileFetched) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
@@ -221,7 +228,7 @@ export default function App() {
     );
   }
 
-  // Show profile setup if authenticated but no profile
+  // Show profile setup if authenticated but no profile yet
   const showProfileSetup = isAuthenticated && !profileLoading && profileFetched && userProfile === null;
 
   return (

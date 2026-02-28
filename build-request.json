@@ -1,127 +1,58 @@
 {
   "kind": "build_request",
-  "title": "Improve form UX, add themed background, highlight high-spend history rows, celebration animation on expensive entry",
+  "title": "Fix infinite loading screen — app stuck on 'Loading your profile...'",
   "projectName": "Rupee Tracker",
-  "priority": "normal",
+  "priority": "high",
   "requirements": [
     {
-      "id": "REQ-15",
-      "text": "Redesign the Add Expense form in AddExpense.tsx so that the category dropdown and all dependent fields are clearly separated and stacked vertically with no visual overlap. The category selector must render as a full-width visually distinct card/selector (not a small inline dropdown that overlaps other fields). The sub-category selector must appear below the category selector in its own clearly labelled row only when a category with sub-categories is selected. Amount, Notes, and all other fields must each occupy their own clearly separated full-width row. No field labels or input rows should visually overlap with the dropdown options list at any time.",
+      "id": "REQ-20",
+      "text": "Fix the infinite 'Loading your profile...' state in App.tsx. The app is stuck showing a loading spinner and never resolves to either the login screen or the main UI. Investigate the profile-fetching logic in useQueries.ts (useGetProfile or equivalent hook) — add a timeout or error boundary so that if the profile query fails, errors out, or returns null/undefined after a reasonable timeout (e.g., 5 seconds), the app falls back gracefully to the unauthenticated login state instead of spinning forever. Ensure the loading guard in App.tsx does not block rendering when the actor or identity is not yet ready.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-9"
+          "msg-1"
         ],
         "quotes": [
-          "fields like this.. means mixed below columns hard to identify expense type. So make them dynamic and clear to select"
+          "Am not able to login it is still loading same as in snips.. It is okay me to lose data but do fix"
         ]
       },
       "acceptanceCriteria": [
-        "Opening the category selector does not visually overlap Amount, Notes, or Save Expense button areas",
-        "Each form field (Date, Expense Type, Sub-category, Amount, Notes) is in its own distinct full-width stacked row",
-        "Sub-category row is hidden when no sub-category category is selected and appears smoothly below the category row when applicable",
-        "All category options are individually tappable with adequate tap target size (min 44px height)",
-        "Form remains fully functional on 320px–430px screen widths"
+        "Opening the app no longer results in an indefinite 'Loading your profile...' spinner.",
+        "If the profile query fails or times out, the app falls back to the login/unauthenticated state within 5 seconds.",
+        "After the fallback, the user can see and interact with the login button to authenticate via Internet Identity.",
+        "No runtime errors are thrown during the loading-to-login fallback transition."
       ]
     },
     {
-      "id": "REQ-16",
-      "text": "Add a decorative background to the Add Expense and History pages (and optionally the full app shell) featuring soft, semi-transparent themed symbols — Indian Rupee (₹), shopping bag, medical cross/pill, food bowl, petrol pump — arranged as a subtle repeating pattern. The background must not reduce text readability or contrast. Use warm amber/saffron tones consistent with the existing color palette. Render the background as a generated SVG or PNG asset placed in frontend/public/assets/generated.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-9"
-        ],
-        "quotes": [
-          "create butiful background with symbol like rupay, shopping, medical symbols"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Background pattern is visible on the Add Expense and History pages",
-        "Symbols include at least: ₹ (Rupee), shopping bag, medical cross, food icon",
-        "Background does not reduce readability of any form field, label, or list item",
-        "Background uses warm amber/saffron palette consistent with existing theme",
-        "Background asset is served from frontend/public/assets/generated"
-      ]
-    },
-    {
-      "id": "REQ-17",
-      "text": "In the History page (History.tsx), visually highlight expense rows where the amount is high. Define 'high amount' as any single expense entry that is ≥ ₹500. Highlighted rows should display a visually distinct treatment — e.g., a bold amber/red-tinted background, a flame or alert icon, or a prominent border — that makes them stand out in the list. The highlight must show alongside the existing category badge and sub-category label so the user can immediately identify the category and sub-category of high-spend entries.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-9"
-        ],
-        "quotes": [
-          "highlight history page where am sending high amount with category and sub category"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Expense rows with amount ≥ ₹500 render with a visually distinct highlight (color tint, icon, or border)",
-        "The category badge and sub-category label remain clearly visible on highlighted rows",
-        "Rows below ₹500 render with the normal/default style",
-        "Highlight is visible in both date-filtered and unfiltered history views",
-        "Highlight is accessible (contrast ratio maintained for text)"
-      ]
-    },
-    {
-      "id": "REQ-18",
-      "text": "After the user successfully submits an expense entry in AddExpense.tsx, if the amount is ≥ ₹500, display a fun celebration overlay or inline animation (e.g., falling coins, a cartoon character reacting, or confetti) and/or play a short playful sound effect. The animation should auto-dismiss after 2–3 seconds without requiring user interaction. For entries below ₹500, the existing success banner is sufficient — no celebration needed.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-9"
-        ],
-        "quotes": [
-          "Create some funny or cute image or sounds when ever I submit expensive"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Submitting an expense ≥ ₹500 triggers a visible celebration animation (confetti, coins, or cute character)",
-        "Animation auto-dismisses after 2–3 seconds",
-        "A short playful sound effect plays on expensive submission (with graceful fallback if audio is blocked)",
-        "Submitting an expense < ₹500 shows only the normal success banner (no animation)",
-        "The celebration does not block the user from immediately adding another expense after it dismisses"
-      ]
-    },
-    {
-      "id": "REQ-19",
-      "text": "Ensure all existing backend expense data is fully preserved across this upgrade. The backend Motoko actor in backend/main.mo must retain all stable variables and existing expense records. If any migration is needed, generate or update backend/migration.mo to migrate existing data without loss. The frontend must continue to read and display all previously saved expenses after the upgrade is deployed.",
+      "id": "REQ-21",
+      "text": "Reset or clear any corrupted stable state in the backend Motoko actor (backend/main.mo) that may be causing the profile lookup to hang or fail on canister call. The user has explicitly consented to data loss. Drop and reinitialize all stable variables (expenses, userProfiles, or equivalent) to empty collections so the canister starts fresh and responds correctly to profile queries.",
       "target": "backend",
       "source": {
         "messageIds": [
-          "msg-9"
+          "msg-1"
         ],
         "quotes": [
-          "don't lose old new version also need that data"
+          "It is okay me to lose data but do fix"
         ]
       },
       "acceptanceCriteria": [
-        "All expense entries saved before this upgrade remain accessible in the History tab after upgrade",
-        "No stable variable is removed or renamed in a way that would cause data loss on canister upgrade",
-        "migration.mo (if generated) correctly maps old state to new state without discarding records",
-        "getExpenses, getExpensesByDate, and getExpensesByDateRange return previously saved entries after upgrade"
+        "The backend canister responds successfully to getProfile (or equivalent) calls without hanging.",
+        "All stable state is initialized to empty on upgrade — no leftover records from previous versions.",
+        "The frontend can complete the profile-fetch round-trip and render the app correctly after the backend reset."
       ]
     }
   ],
   "constraints": [
-    "Do not modify files under frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useActor.ts, frontend/src/main.tsx, or frontend/src/components/ui",
-    "All existing expense data must be preserved — no stable variable renames or drops without migration",
-    "Background decoration must not reduce text/input contrast or accessibility",
-    "Celebration animation must auto-dismiss and must not block form interaction"
+    "Do not modify any file listed under frontend.immutablePaths (useInternetIdentity.ts, useActor.ts, main.tsx, frontend/src/components/ui).",
+    "Data loss is explicitly accepted by the user — stable variables may be reset to empty."
   ],
   "nonGoals": [
-    "Changing the overall app color palette away from the existing warm amber/saffron theme",
-    "Adding new expense categories or sub-categories beyond what already exists",
-    "Redesigning the bottom navigation bar or tab structure",
-    "Adding any real-time or server-push features",
-    "Changing the Repay Report page layout"
+    "Preserving or migrating any existing expense or profile data.",
+    "Adding new features or UI changes unrelated to the login/loading fix.",
+    "Changing the Internet Identity authentication flow itself."
   ],
   "imageRequirements": {
-    "required": [
-      "Soft repeating pattern of semi-transparent themed finance symbols — Indian Rupee ₹, shopping bag, medical cross, food bowl, petrol pump drop — on a warm cream/amber background, suitable as a decorative page background tile (expense-bg-pattern.dim_800x800.png)",
-      "Cute cartoon coin character with big eyes and a happy expression, arms raised in celebration, on a transparent background (celebration-coin.dim_400x400.png)"
-    ],
+    "required": [],
     "edits": []
   }
 }

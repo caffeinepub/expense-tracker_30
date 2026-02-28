@@ -1,24 +1,57 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useEffect, useRef, useState } from 'react';
 import { useActor } from './useActor';
 import { Category, type Expense, type UserProfile } from '../backend';
 
+const PROFILE_TIMEOUT_MS = 5000;
+
 export function useGetCallerUserProfile() {
   const { actor, isFetching: actorFetching } = useActor();
+  const [timedOut, setTimedOut] = useState(false);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Start a timeout whenever we're in a loading state (actor fetching or query pending)
+  useEffect(() => {
+    if (actorFetching) {
+      // Reset timeout whenever actor is fetching
+      if (timerRef.current) clearTimeout(timerRef.current);
+      setTimedOut(false);
+      timerRef.current = setTimeout(() => {
+        setTimedOut(true);
+      }, PROFILE_TIMEOUT_MS);
+    } else {
+      // Actor is ready — clear any pending timeout
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+        timerRef.current = null;
+      }
+    }
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
+  }, [actorFetching]);
 
   const query = useQuery<UserProfile | null>({
     queryKey: ['currentUserProfile'],
     queryFn: async () => {
       if (!actor) throw new Error('Actor not available');
-      return actor.getCallerUserProfile();
+      // Race the actual call against a timeout
+      const timeoutPromise = new Promise<never>((_, reject) =>
+        setTimeout(() => reject(new Error('Profile fetch timed out')), PROFILE_TIMEOUT_MS)
+      );
+      return Promise.race([actor.getCallerUserProfile(), timeoutPromise]);
     },
     enabled: !!actor && !actorFetching,
     retry: false,
   });
 
+  const isTimedOutOrError = timedOut || query.isError;
+
   return {
     ...query,
-    isLoading: actorFetching || query.isLoading,
-    isFetched: !!actor && query.isFetched,
+    isLoading: !isTimedOutOrError && (actorFetching || query.isLoading),
+    isFetched: isTimedOutOrError || (!!actor && query.isFetched),
+    isTimedOut: timedOut,
   };
 }
 

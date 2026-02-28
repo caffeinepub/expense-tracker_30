@@ -2,10 +2,11 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-redesign-the-add-expense-form-in-addexpense-tsx-so-that-the-category-dropdown-and-all-dependent-fields-are-clearly-separated-and-stacked-vertically-with-no-visual-overlap-the-category-selector-must-render-as-a-full-width-visually-distinct-card-selector-not-a-small-inline-dropdown-that-overlaps-other-fields-the-sub-category-selector-must-appear-below-the-category-selector-in-its-own-clearly-labelled-row-only-when-a-category-with-sub-categories-is-selected-amount-notes-and-all-other-fields-must-each-occupy-their-own-clearly-separated-full-width-row-no-field-labels-or-input-rows-should-visually-overlap-with-the-dropdown-options-list-at-any-time",
-      "featureTitle": "Redesign the Add Expense form in AddExpense.tsx so that the category dropdown and all dependent fields are clearly separated and stacked vertically with no visual overlap. The category selector must render as a full-width visually distinct card/selector (not a small inline dropdown that overlaps other fields). The sub-category selector must appear below the category selector in its own clearly labelled row only when a category with sub-categories is selected. Amount, Notes, and all other fields must each occupy their own clearly separated full-width row. No field labels or input rows should visually overlap with the dropdown options list at any time.",
+      "featureId": "feature-fix-the-infinite-loading-your-profile-state-in-app-tsx-the-app-is-stuck-showing-a-loading-spinner-and-never-resolves-to-either-the-login-screen-or-the-main-ui-investigate-the-profile-fetching-logic-in-usequeries-ts-usegetprofile-or-equivalent-hook-add-a-timeout-or-error-boundary-so-that-if-the-profile-query-fails-errors-out-or-returns-null-undefined-after-a-reasonable-timeout-e-g-5-seconds-the-app-falls-back-gracefully-to-the-unauthenticated-login-state-instead-of-spinning-forever-ensure-the-loading-guard-in-app-tsx-does-not-block-rendering-when-the-actor-or-identity-is-not-yet-ready",
+      "featureTitle": "Fix the infinite 'Loading your profile...' state in App.tsx. The app is stuck showing a loading spinner and never resolves to either the login screen or the main UI. Investigate the profile-fetching logic in useQueries.ts (useGetProfile or equivalent hook) — add a timeout or error boundary so that if the profile query fails, errors out, or returns null/undefined after a reasonable timeout (e.g., 5 seconds), the app falls back gracefully to the unauthenticated login state instead of spinning forever. Ensure the loading guard in App.tsx does not block rendering when the actor or identity is not yet ready.",
       "files": [
-        "frontend/src/pages/AddExpense.tsx"
+        "frontend/src/App.tsx",
+        "frontend/src/hooks/useQueries.ts"
       ],
       "components": [
         "core-infrastructure@1.0.2",
@@ -16,65 +17,7 @@
         "authorization@4.0.0"
       ],
       "testIds": [
-        "REQ-15"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-add-a-decorative-background-to-the-add-expense-and-history-pages-and-optionally-the-full-app-shell-featuring-soft-semi-transparent-themed-symbols-indian-rupee-shopping-bag-medical-cross-pill-food-bowl-petrol-pump-arranged-as-a-subtle-repeating-pattern-the-background-must-not-reduce-text-readability-or-contrast-use-warm-amber-saffron-tones-consistent-with-the-existing-color-palette-render-the-background-as-a-generated-svg-or-png-asset-placed-in-frontend-public-assets-generated",
-      "featureTitle": "Add a decorative background to the Add Expense and History pages (and optionally the full app shell) featuring soft, semi-transparent themed symbols — Indian Rupee (₹), shopping bag, medical cross/pill, food bowl, petrol pump — arranged as a subtle repeating pattern. The background must not reduce text readability or contrast. Use warm amber/saffron tones consistent with the existing color palette. Render the background as a generated SVG or PNG asset placed in frontend/public/assets/generated.",
-      "files": [
-        "frontend/src/pages/AddExpense.tsx",
-        "frontend/src/pages/History.tsx"
-      ],
-      "components": [
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0",
-        "authorization@4.0.0"
-      ],
-      "testIds": [
-        "REQ-16"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-in-the-history-page-history-tsx-visually-highlight-expense-rows-where-the-amount-is-high-define-high-amount-as-any-single-expense-entry-that-is-500-highlighted-rows-should-display-a-visually-distinct-treatment-e-g-a-bold-amber-red-tinted-background-a-flame-or-alert-icon-or-a-prominent-border-that-makes-them-stand-out-in-the-list-the-highlight-must-show-alongside-the-existing-category-badge-and-sub-category-label-so-the-user-can-immediately-identify-the-category-and-sub-category-of-high-spend-entries",
-      "featureTitle": "In the History page (History.tsx), visually highlight expense rows where the amount is high. Define 'high amount' as any single expense entry that is ≥ ₹500. Highlighted rows should display a visually distinct treatment — e.g., a bold amber/red-tinted background, a flame or alert icon, or a prominent border — that makes them stand out in the list. The highlight must show alongside the existing category badge and sub-category label so the user can immediately identify the category and sub-category of high-spend entries.",
-      "files": [
-        "frontend/src/pages/History.tsx"
-      ],
-      "components": [
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0",
-        "authorization@4.0.0"
-      ],
-      "testIds": [
-        "REQ-17"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-after-the-user-successfully-submits-an-expense-entry-in-addexpense-tsx-if-the-amount-is-500-display-a-fun-celebration-overlay-or-inline-animation-e-g-falling-coins-a-cartoon-character-reacting-or-confetti-and-or-play-a-short-playful-sound-effect-the-animation-should-auto-dismiss-after-2-3-seconds-without-requiring-user-interaction-for-entries-below-500-the-existing-success-banner-is-sufficient-no-celebration-needed",
-      "featureTitle": "After the user successfully submits an expense entry in AddExpense.tsx, if the amount is ≥ ₹500, display a fun celebration overlay or inline animation (e.g., falling coins, a cartoon character reacting, or confetti) and/or play a short playful sound effect. The animation should auto-dismiss after 2–3 seconds without requiring user interaction. For entries below ₹500, the existing success banner is sufficient — no celebration needed.",
-      "files": [
-        "frontend/src/pages/AddExpense.tsx"
-      ],
-      "components": [
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0",
-        "authorization@4.0.0"
-      ],
-      "testIds": [
-        "REQ-18"
+        "REQ-20"
       ],
       "confidence": "high"
     }
