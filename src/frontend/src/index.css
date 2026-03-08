@@ -1,0 +1,190 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: oklch(0.99 0.01 75);
+    --foreground: oklch(0.2 0.04 55);
+    --card: oklch(1 0 0);
+    --card-foreground: oklch(0.2 0.04 55);
+    --popover: oklch(1 0 0);
+    --popover-foreground: oklch(0.2 0.04 55);
+    --primary: oklch(0.65 0.18 55);
+    --primary-foreground: oklch(1 0 0);
+    --secondary: oklch(0.95 0.03 75);
+    --secondary-foreground: oklch(0.35 0.06 55);
+    --muted: oklch(0.95 0.02 75);
+    --muted-foreground: oklch(0.55 0.04 55);
+    --accent: oklch(0.92 0.05 75);
+    --accent-foreground: oklch(0.3 0.06 55);
+    --destructive: oklch(0.55 0.22 25);
+    --destructive-foreground: oklch(1 0 0);
+    --border: oklch(0.9 0.03 75);
+    --input: oklch(0.9 0.03 75);
+    --ring: oklch(0.65 0.18 55);
+    --radius: 0.75rem;
+    --success: oklch(0.6 0.18 145);
+    --warning: oklch(0.75 0.18 75);
+  }
+
+  .dark {
+    --background: oklch(0.15 0.02 55);
+    --foreground: oklch(0.95 0.02 75);
+    --card: oklch(0.2 0.03 55);
+    --card-foreground: oklch(0.95 0.02 75);
+    --popover: oklch(0.2 0.03 55);
+    --popover-foreground: oklch(0.95 0.02 75);
+    --primary: oklch(0.7 0.18 55);
+    --primary-foreground: oklch(0.15 0.02 55);
+    --secondary: oklch(0.25 0.04 55);
+    --secondary-foreground: oklch(0.85 0.03 75);
+    --muted: oklch(0.25 0.03 55);
+    --muted-foreground: oklch(0.65 0.04 75);
+    --accent: oklch(0.28 0.05 55);
+    --accent-foreground: oklch(0.9 0.03 75);
+    --destructive: oklch(0.6 0.22 25);
+    --destructive-foreground: oklch(1 0 0);
+    --border: oklch(0.3 0.04 55);
+    --input: oklch(0.3 0.04 55);
+    --ring: oklch(0.7 0.18 55);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: "Nunito", sans-serif;
+  }
+}
+
+@layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Category badge utility classes */
+@layer components {
+  .badge-food {
+    background-color: oklch(0.95 0.08 55);
+    color: oklch(0.45 0.14 55);
+  }
+  .badge-tea {
+    background-color: oklch(0.94 0.07 85);
+    color: oklch(0.45 0.12 85);
+  }
+  .badge-cooldrink {
+    background-color: oklch(0.93 0.08 220);
+    color: oklch(0.4 0.14 220);
+  }
+  .badge-petrol {
+    background-color: oklch(0.93 0.07 30);
+    color: oklch(0.42 0.14 30);
+  }
+  .badge-fruits {
+    background-color: oklch(0.94 0.09 145);
+    color: oklch(0.4 0.15 145);
+  }
+  .badge-recharge {
+    background-color: oklch(0.93 0.08 280);
+    color: oklch(0.42 0.14 280);
+  }
+  .badge-shopping {
+    background-color: oklch(0.94 0.08 320);
+    color: oklch(0.42 0.14 320);
+  }
+  .badge-trip {
+    background-color: oklch(0.93 0.07 200);
+    color: oklch(0.4 0.13 200);
+  }
+  .badge-bikerepair {
+    background-color: oklch(0.93 0.05 60);
+    color: oklch(0.4 0.1 60);
+  }
+  .badge-medical {
+    background-color: oklch(0.93 0.09 165);
+    color: oklch(0.38 0.15 165);
+  }
+  .badge-cashtransfer {
+    background-color: oklch(0.93 0.09 270);
+    color: oklch(0.4 0.15 270);
+  }
+  .badge-others {
+    background-color: oklch(0.93 0.05 90);
+    color: oklch(0.42 0.1 90);
+  }
+  .badge-creditcard {
+    background-color: oklch(0.93 0.08 250);
+    color: oklch(0.38 0.16 250);
+  }
+  .badge-haircut {
+    background-color: oklch(0.94 0.08 70);
+    color: oklch(0.45 0.14 70);
+  }
+  .badge-donation {
+    background-color: oklch(0.93 0.1 155);
+    color: oklch(0.38 0.16 155);
+  }
+}
+
+/* Celebration animations */
+@keyframes confetti-fall {
+  0% {
+    transform: translateY(-20px) rotate(0deg) scale(1);
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(110vh) rotate(720deg) scale(0.5);
+    opacity: 0;
+  }
+}
+
+@keyframes celebration-bounce {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+  20% {
+    transform: translateY(-18px) scale(1.08);
+  }
+  40% {
+    transform: translateY(-8px) scale(1.04);
+  }
+  60% {
+    transform: translateY(-14px) scale(1.06);
+  }
+  80% {
+    transform: translateY(-4px) scale(1.02);
+  }
+}
+
+@keyframes fade-in-scale {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-confetti-fall {
+  animation: confetti-fall linear forwards;
+}
+
+.animate-celebration-bounce {
+  animation: celebration-bounce 0.7s ease-in-out infinite, fade-in-scale 0.3s
+    ease-out;
+}
